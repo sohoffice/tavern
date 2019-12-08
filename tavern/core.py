@@ -9,6 +9,7 @@ import pytest
 
 from tavern.schemas.files import wrapfile
 from tavern.util.strict_util import StrictLevel
+from tavern.util.tincture import TinctureProvider
 
 from .plugins import get_expected, get_extra_sessions, get_request_type, get_verifiers
 from .util import exceptions
@@ -227,7 +228,7 @@ def run_stage(sessions, stage, tavern_box, test_block_config):
     Args:
         sessions (dict): Dictionary of relevant 'session' objects used for this test
         stage (dict): specification of stage to be run
-        tavern_box (box.Box): Box object containing format variables to be used
+        tavern_box (box.Box): Box object containing extra special format variables to be used
             in test
         test_block_config (dict): available variables for test
     """
@@ -242,7 +243,13 @@ def run_stage(sessions, stage, tavern_box, test_block_config):
     delay(stage, "before", test_block_config["variables"])
 
     logger.info("Running stage : %s", name)
+
+    provider = TinctureProvider(stage)
+    provider.start_tinctures(stage)
+
     response = r.run()
+
+    provider.end_tinctures(response)
 
     verifiers = get_verifiers(stage, test_block_config, sessions, expected)
     for v in verifiers:

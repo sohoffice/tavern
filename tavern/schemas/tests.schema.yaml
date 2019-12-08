@@ -27,6 +27,11 @@ schema;stage:
   type: map
   required: true
   mapping:
+
+    tinctures:
+      func: validate_extensions
+      type: any
+
     id:
       type: str
       required: false
