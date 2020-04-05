@@ -9,7 +9,6 @@ import pytest
 
 from tavern.schemas.files import wrapfile
 from tavern.util.strict_util import StrictLevel
-from tavern.util.strict_util import StrictLevel
 from tavern.util.tincture import TinctureProvider
 
 from .plugins import get_expected, get_extra_sessions, get_request_type, get_verifiers
