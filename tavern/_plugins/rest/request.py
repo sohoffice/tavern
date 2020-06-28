@@ -113,7 +113,12 @@ def get_request_args(rspec, test_block_config):
     add_request_args(optional_in_file, True)
 
     if "auth" in fspec:
-        request_args["auth"] = tuple(fspec["auth"])
+        try:
+            func = get_wrapped_create_function(fspec['auth']['$ext'])
+        except(KeyError, TypeError, AttributeError) as e:
+            request_args["auth"] = tuple(fspec["auth"])
+        else:
+            request_args["auth"] = func()
 
     if "cert" in fspec:
         if isinstance(fspec["cert"], list):

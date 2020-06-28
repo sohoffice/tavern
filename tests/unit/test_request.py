@@ -400,3 +400,24 @@ class TestGetFiles(object):
         assert file[0] == os.path.basename(tfile.name)
         assert file[2] == "abc123"
         assert file[3] == {"Content-Encoding": "def456"}
+
+
+class TestAuth:
+    def test_auth_function(self, req, includes):
+        """Make sure request.auth works with ext function
+        """
+        to_copy = {"thing": "value"}
+
+        req["auth"] = {"$ext": {"function": "copy:copy", "extra_args": [to_copy]}}
+
+        args = get_request_args(req, includes)
+
+        assert args["auth"] == to_copy
+
+    def test_auth_list(self, req, includes):
+        """Make sure request.auth works with a list
+        """
+        req["auth"] = ["foo", "bar"]
+        args = get_request_args(req, includes)
+
+        assert args["auth"] == tuple(["foo", "bar"])

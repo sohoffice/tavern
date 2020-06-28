@@ -142,10 +142,8 @@ schema;stage:
 
         auth:
           func: validate_json_with_ext
-          type: seq
+          type: any
           required: false
-          sequence:
-            - type: str
 
         cookies:
           type: seq
